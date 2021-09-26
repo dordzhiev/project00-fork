@@ -28,15 +28,20 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton var1, var2, var3;
     private TextView kalmTxt;
     private TextView counterTxt;
+    public static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         setContentView(R.layout.activity_main);
         init();
         loadWords();
         createQuest();
+    }
 
+    public static MainActivity getInstance(){
+        return instance;
     }
 
     private void showMsg(String msg){
@@ -113,4 +118,6 @@ public class MainActivity extends AppCompatActivity {
         kalmTxt = findViewById(R.id.kalm);
         counterTxt = findViewById(R.id.counter);
     }
+
+
 }
