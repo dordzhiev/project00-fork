@@ -17,6 +17,7 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Define
     private Random rand;
 
     private HashMap<String, String> allPairWords;
@@ -28,35 +29,52 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton var1, var2, var3;
     private TextView kalmTxt;
     private TextView counterTxt;
+
+    //App instance var
     public static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Получаем состояние app
         instance = this;
+
+        //Работа с интерфейсом
         setContentView(R.layout.activity_main);
         init();
         loadWords();
         createQuest();
     }
 
+    //getter of instance
     public static MainActivity getInstance(){
         return instance;
     }
 
+    //Toast on result
     private void showMsg(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
     }
 
+    //View
     private void updateView() {
         RadioButton varAnswer,var;
+
+        //set counter view
         counterTxt.setText(String.format("%d/%d",rusWords.size()-allPairWords.size(),rusWords.size()));
         kalmTxt.setText(kalm);
         kalmTxt.setAlpha(0.0f);
         kalmTxt.animate().alpha(1.0f).setDuration(300);
+
+        //получаем случайное число
         int numVar = rand.nextInt(3);
+
+        //вставляем верный ответ в случайный radiobutton
         varAnswer = (RadioButton) radioGroup.getChildAt(numVar);
         varAnswer.setText(answer);
+
+        //вставляем неверные ответы в оставшиеся
         for(int i = 0; i < radioGroup.getChildCount(); i++){
             var = (RadioButton) radioGroup.getChildAt(i);
             if(var.getId() != varAnswer.getId()){
@@ -65,10 +83,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //random string method
     private String getRandStr(){
         return rusWords.get(rand.nextInt(rusWords.size()));
     }
 
+    //check for correct
     private void checkWords() {
         RadioButton radioButton = findViewById(radioGroup.getCheckedRadioButtonId()) ;
         if(radioButton.getText() == answer){
@@ -83,9 +103,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createQuest() {
+
+        //если все слова закончились
         if(allPairWords.size() == 0){
             finishTest();
         }
+
+        /*dwadwa
+        */
         else {
             int numRandPair = rand.nextInt(allPairWords.size());
             answer = (String) allPairWords.keySet().toArray()[numRandPair];
