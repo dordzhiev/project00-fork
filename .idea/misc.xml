@@ -11,6 +11,9 @@
         <entry key="..\:/Programs/Android/project00/app/src/main/res/mipmap-anydpi-v26/Kalm_lang.xml" value="0.2703125" />
         <entry key="..\:/Programs/Android/project00/app/src/main/res/mipmap-anydpi-v26/gucci.xml" value="0.2703125" />
         <entry key="..\:/Programs/Android/project00/app/src/main/res/mipmap-anydpi-v26/kalm.xml" value="0.14635416666666667" />
+        <entry key="app/src/main/res/layout/activity_dict.xml" value="0.20969202898550723" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20969202898550723" />
+        <entry key="app/src/main/res/layout/word_item.xml" value="0.20969202898550723" />
       </map>
     </option>
   </component>

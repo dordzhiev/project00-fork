@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ResultActivity">
+    tools:context=".view.ResultActivity">
 
     <Button
         android:id="@+id/button"
@@ -12,7 +12,7 @@
         android:layout_height="75dp"
         android:layout_marginBottom="30dp"
         android:text="Начать заново"
-        android:onClick="starttest"
+        android:onClick="startTest"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

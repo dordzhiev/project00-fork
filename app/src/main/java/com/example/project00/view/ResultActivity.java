@@ -1,4 +1,4 @@
-package com.example.project00;
+package com.example.project00.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.project00.R;
+import com.example.project00.view.MainActivity;
 
 public class ResultActivity extends AppCompatActivity {
     TextView textView;
@@ -23,8 +26,8 @@ public class ResultActivity extends AppCompatActivity {
         test(textView);
     }
 
-    public void starttest(View view) {
-        Intent intent = new Intent(this,MainActivity.class);
+    public void startTest(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

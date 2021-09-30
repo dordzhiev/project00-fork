@@ -1,14 +1,23 @@
-package com.example.project00;
+package com.example.project00.view;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.project00.R;
+import com.example.project00.Words;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,24 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
     private RadioGroup radioGroup;
     private Button answerBtn;
-    private RadioButton var1, var2, var3;
     private TextView kalmTxt;
     private TextView counterTxt;
-    public static MainActivity instance;
+
+    private final int DIALOG_EXIT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        instance = this;
         setContentView(R.layout.activity_main);
         init();
-        loadWords();
-        createQuest();
+        createDialog();
     }
 
-    public static MainActivity getInstance(){
-        return instance;
-    }
 
     private void showMsg(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_SHORT).show();
@@ -65,26 +69,66 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void createDialog() {
+        String[] alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".split("");
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder
+                .setTitle(R.string.title_dialog)
+                .setItems(alphabet, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        loadWords(alphabet[i]);
+                        createQuest();
+                    }
+                });
+
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
     private String getRandStr(){
         return rusWords.get(rand.nextInt(rusWords.size()));
     }
 
-    private void checkWords() {
+    private void checkAnswer() {
         RadioButton radioButton = findViewById(radioGroup.getCheckedRadioButtonId()) ;
         if(radioButton.getText() == answer){
-            showMsg("Правильно!");
+            animAnswer(radioButton, true);
             radioButton.setChecked(false);
             createQuest();
         }
         else {
-            showMsg("Не правильно");
+            animAnswer(radioButton, false);
             radioButton.setChecked(false);
         }
     }
 
+    public void animAnswer(View view, boolean isAnswerCorrect) {
+        ValueAnimator valueAnimator = new ValueAnimator();
+        if (isAnswerCorrect) {
+            valueAnimator.setIntValues(
+                    getResources().getColor(R.color.green100),
+                    Color.WHITE
+            );
+        }
+        else {
+            valueAnimator.setIntValues(
+                    getResources().getColor(R.color.red100),
+                    Color.WHITE
+            );
+        }
+        valueAnimator.setEvaluator(new ArgbEvaluator());
+        valueAnimator.addUpdateListener(valueAnimator1 -> {
+            view.setBackgroundColor(((Integer) valueAnimator.getAnimatedValue()));
+        });
+        valueAnimator.setDuration(700);
+        valueAnimator.start();
+
+    }
+
     private void createQuest() {
         if(allPairWords.size() == 0){
-            finishTest();
+            startFinishActivity();
         }
         else {
             int numRandPair = rand.nextInt(allPairWords.size());
@@ -95,26 +139,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void finishTest() {
-        Intent intent = new Intent(this,ResultActivity.class);
+    private void startFinishActivity() {
+        Intent intent = new Intent(this, ResultActivity.class);
         startActivity(intent);
         finish();
     }
 
-    private void loadWords() {
-        Words words = new Words();
-        allPairWords = words.getWords();
+    private void loadWords(String category) {
+        Words words = new Words(this);
+        allPairWords = words.getNRandomWordsByCategory(10, category);
         rusWords = new ArrayList<>(allPairWords.keySet());
     }
 
     private void init(){
         rand = new Random();
+
         answerBtn = findViewById(R.id.answer);
-        answerBtn.setOnClickListener(view -> checkWords());
+        answerBtn.setOnClickListener(view -> checkAnswer());
+
         radioGroup = findViewById(R.id.radioGroup);
-        var1 = findViewById(R.id.var1);
-        var2 = findViewById(R.id.var2);
-        var3 = findViewById(R.id.var3);
         kalmTxt = findViewById(R.id.kalm);
         counterTxt = findViewById(R.id.counter);
     }
